@@ -8,11 +8,16 @@ const getNumberFromApi = async (): Promise<number> => {
 
 export const App = () => {
   const [number, setNumber] = useState<number>()
+  const [isLoading, setIsLoading] = useState<boolean>(true)
 
 
   useEffect(() => {
     getNumberFromApi().then(num => setNumber(num))
   }, [])
+
+  useEffect(() => {
+    if (number) setIsLoading(false)
+  }, [number])
 
 
 
@@ -20,6 +25,7 @@ export const App = () => {
     <>
       <h2>Número aleatório:</h2>
       <p>{number}</p>
+      {isLoading && <p>Cargando...</p>}
       <button onClick={getNumberFromApi}>
         Gerar número
       </button>
