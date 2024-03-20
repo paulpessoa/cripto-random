@@ -1,35 +1,30 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useEffect, useState } from 'react'
 
-function App() {
-  const [count, setCount] = useState(0)
+const getNumberFromApi = async (): Promise<number> => {
+  const res = await fetch('https://www.random.org/integers/?num=1&min=1&max=500&col=1&base=10&format=plain&rnd=new')
+  const numberString = await res.text();
+  return +numberString
+}
+
+export const App = () => {
+  const [number, setNumber] = useState<number>()
+
+
+  useEffect(() => {
+    getNumberFromApi().then(num => setNumber(num))
+  }, [])
+
+
 
   return (
     <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <h2>Número aleatório:</h2>
+      <p>{number}</p>
+      <button onClick={getNumberFromApi}>
+        Gerar número
+      </button>
     </>
   )
 }
 
-export default App
+//https://cursos.devtalles.com/courses/take/react-query/lessons/39768682-mejorar-la-experiencia-de-usuario
